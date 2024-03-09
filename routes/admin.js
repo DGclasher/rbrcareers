@@ -5,6 +5,7 @@ import {
   getAllJobs,
   getApplicants,
   downloadResume,
+  deleteApplicant,
   getApplicantById,
 } from "../controllers/admin.js";
 
@@ -15,5 +16,6 @@ router.get("/jobs", verifyAdmin, getAllJobs);
 router.get("/job/:id", verifyAdmin, getApplicants);
 router.get("/resume/:id", verifyAdmin, downloadResume);
 router.get("/applicant/:id", verifyAdmin, getApplicantById);
+router.delete("/applicant/:id", verifyAdmin, deleteApplicant);
 
 export default router;

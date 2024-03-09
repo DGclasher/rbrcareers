@@ -5,7 +5,6 @@ import helmet from "helmet";
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import busboyBodyParser from "busboy-body-parser";
 
 import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/admin.js";
@@ -19,11 +18,9 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(morgan("common"));
-// app.use(bodyParser.text({type: '/'}));
-// app.use(bodyParser.json());
-app.use(busboyBodyParser());
-// app.use(express.urlencoded({ extended: true }));
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 const PORT = process.env.PORT || 5000;

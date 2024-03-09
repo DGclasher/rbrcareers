@@ -20,20 +20,17 @@ const applicationSchema = new mongoose.Schema({
   coverLetter: {
     type: String,
   },
-  resume: {
-    data: Buffer,
-    contentType: String,
+  resumeUrl: {
+    type: String,
   },
-  education: {
-    list: [
+  qualifications: {
+    type: [
       {
         degree: String,
-        major: String,
-        university: String,
-        year: Number,
-      }
-    ]
-  }
+        institute: String,
+      },
+    ],
+  },
 });
 
 const Application = mongoose.model("Application", applicationSchema);

@@ -20,13 +20,12 @@ const postingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: {
-    type: String,
-    default: "Open",
+  isAvailable: {
+    type: Boolean,
+    default: true,
   },
-  totalOpenings: {
-    type: Number,
-    required: true,
+  type: {
+    type: String,
   },
 });
 
