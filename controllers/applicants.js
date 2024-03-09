@@ -1,27 +1,6 @@
 import Posting from "../models/posting.js";
-import { initializeApp } from "firebase/app";
 import Application from "../models/application.js";
-import firebaseConfig from "../config/firebaseconfig.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
-const app = initializeApp(firebaseConfig);
-
-const storage = getStorage(app);
-
-const uploadResumeToFirebase = async (resumeFile, id) => {
-  try {
-    const storageRef = ref(
-      storage,
-      `resumes/${id}.${resumeFile.originalname.split(".").pop()}`
-    );
-    await uploadBytes(storageRef, resumeFile.buffer);
-    const resumeUrl = await getDownloadURL(storageRef);
-    return resumeUrl;
-  } catch (error) {
-    console.error("Error uploading resume to Firebase:", error);
-    throw error;
-  }
-};
+import { uploadResumeToFirebase } from "../utils/firebase.js";
 
 export const applyJob = async (req, res) => {
   try {
