@@ -1,15 +1,19 @@
+import Posting from "../models/posting.js";
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import firebaseConfig from "../config/firebaseconfig.js";
 import Application from "../models/application.js";
+import firebaseConfig from "../config/firebaseconfig.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const app = initializeApp(firebaseConfig);
 
 const storage = getStorage(app);
 
-const uploadResumeToFirebase = async (resumeFile) => {
+const uploadResumeToFirebase = async (resumeFile, id) => {
   try {
-    const storageRef = ref(storage, `resumes/${resumeFile.originalname}`);
+    const storageRef = ref(
+      storage,
+      `resumes/${id}.${resumeFile.originalname.split(".").pop()}`
+    );
     await uploadBytes(storageRef, resumeFile.buffer);
     const resumeUrl = await getDownloadURL(storageRef);
     return resumeUrl;
@@ -21,29 +25,29 @@ const uploadResumeToFirebase = async (resumeFile) => {
 
 export const applyJob = async (req, res) => {
   try {
-    console.log(req.body.qualifications);
     const {
       jobId,
+      coverLetter,
       applicantName,
       applicantEmail,
       applicantPhone,
-      coverLetter,
       qualifications,
     } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: "No resume file uploaded" });
     }
-    const resumeUrl = await uploadResumeToFirebase(req.file);
     const application = await Application.create({
       jobId: jobId,
+      coverLetter: coverLetter,
       applicantName: applicantName,
       applicantEmail: applicantEmail,
       applicantPhone: applicantPhone,
-      coverLetter: coverLetter,
-      resumeUrl: resumeUrl,
       qualifications: qualifications,
     });
+    const resumeUrl = await uploadResumeToFirebase(req.file, application._id);
+    application.resumeUrl = resumeUrl;
+    await application.save();
     return res
       .status(201)
       .json({ message: "Applied successfully", data: application });
@@ -55,20 +59,24 @@ export const applyJob = async (req, res) => {
 
 export const getAllJobs = async (req, res) => {
   try {
-    const allJobs = await Posting.find(
+    const jobs = await Posting.find(
       { isAvailable: true },
-      { title: 1, location: 1, type: 1, postedOn: 1 }
+      { title: 1, description: 1, location: 1, totalOpenings: 1, _id: 1 }
     );
-    return res.status(200).json(allJobs);
-  } catch (error) {}
+    return res.status(200).json({ message: "Fetched all jobs", data: jobs });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 export const getJobById = async (req, res) => {
   try {
     const { id } = req.params;
     const job = await Posting.findById(id);
-    return res.status(200).json(job);
+    return res.status(200).json({ message: "Fetched job", data: job });
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error" });
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error!" });
   }
 };
