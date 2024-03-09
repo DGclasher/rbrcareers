@@ -17,18 +17,56 @@ export const deleteApplicant = async (req, res) => {
 
 export const createJob = async (req, res) => {
   try {
-    const { title, description, requirements, location, totalOpenings } =
+    const { title, description, requirements, location, totalOpenings, type } =
       req.body;
     const newJob = await Posting.create({
+      type,
       title,
+      location,
       description,
       requirements,
-      location,
       totalOpenings,
     });
     return res
       .status(201)
       .json({ message: "Job Created Successfully", data: newJob });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateJob = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, requirements, location, totalOpenings, type } =
+      req.body;
+    const updatedJob = await Posting.findByIdAndUpdate(
+      id,
+      {
+        type,
+        title,
+        location,
+        description,
+        requirements,
+        totalOpenings,
+      },
+      { new: true }
+    );
+    return res
+      .status(200)
+      .json({ message: "Job Updated Successfully", data: updatedJob });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteJob = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Posting.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Job Deleted Successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -49,7 +87,9 @@ export const getApplicants = async (req, res) => {
   try {
     const jobId = req.params.id;
     const applicants = await Application.find({ jobId: jobId });
-    return res.status(200).json({ message: "Fetched all applicants", data: applicants });
+    return res
+      .status(200)
+      .json({ message: "Fetched all applicants", data: applicants });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -60,10 +100,11 @@ export const getApplicantById = async (req, res) => {
   try {
     const { id } = req.params;
     const applicant = await Application.findById(id);
-    return res.status(200).json({ message: "Fetched applicant", data: applicant});
+    return res
+      .status(200)
+      .json({ message: "Fetched applicant", data: applicant });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
