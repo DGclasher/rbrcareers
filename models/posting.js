@@ -6,26 +6,34 @@ const postingSchema = new mongoose.Schema({
     required: true,
   },
   description: {
-    type: String,
-    required: true,
-  },
-  postedOn: {
-    type: Date,
-    default: Date.now,
-  },
-  requirements: {
-    type: [String],
+    type: {
+      responsibilities: {
+        type: String,
+        required: true,
+      },
+      requirements: {
+        type: String,
+        required: true,
+      },
+      salary: {
+        type: Number,
+      },
+    },
   },
   location: {
     type: String,
     required: true,
   },
+  type: {
+    type: String,
+  },
+  postedOn: {
+    type: Date,
+    default: Date.now,
+  },
   isAvailable: {
     type: Boolean,
     default: true,
-  },
-  type: {
-    type: String,
   },
 });
 

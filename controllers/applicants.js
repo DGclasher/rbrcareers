@@ -6,11 +6,11 @@ export const applyJob = async (req, res) => {
   try {
     const {
       jobId,
-      coverLetter,
       applicantName,
       applicantEmail,
       applicantPhone,
       qualifications,
+      yearsOfExperience,
     } = req.body;
 
     if (!req.file) {
@@ -18,11 +18,11 @@ export const applyJob = async (req, res) => {
     }
     const application = await Application.create({
       jobId: jobId,
-      coverLetter: coverLetter,
       applicantName: applicantName,
       applicantEmail: applicantEmail,
       applicantPhone: applicantPhone,
       qualifications: qualifications,
+      yearsOfExperience: yearsOfExperience,
     });
     const resumeUrl = await uploadResumeToFirebase(req.file, application._id);
     application.resumeUrl = resumeUrl;
@@ -40,7 +40,14 @@ export const getAllJobs = async (req, res) => {
   try {
     const jobs = await Posting.find(
       { isAvailable: true },
-      { title: 1, description: 1, location: 1, totalOpenings: 1, _id: 1 }
+      {
+        _id: 1,
+        type: 1,
+        title: 1,
+        location: 1,
+        postedOn: 1,
+        totalOpenings: 1,
+      }
     );
     return res.status(200).json({ message: "Fetched all jobs", data: jobs });
   } catch (error) {

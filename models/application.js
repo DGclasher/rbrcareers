@@ -17,9 +17,6 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  coverLetter: {
-    type: String,
-  },
   resumeUrl: {
     type: String,
   },
@@ -30,6 +27,9 @@ const applicationSchema = new mongoose.Schema({
         institute: String,
       },
     ],
+  },
+  yearsOfExperience: {
+    type: Number,
   },
 });
 
