@@ -38,7 +38,7 @@ export const applyJob = async (req, res) => {
 
 export const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Posting.find(
+    let jobs = await Posting.find(
       { isAvailable: true },
       {
         _id: 1,
@@ -46,9 +46,16 @@ export const getAllJobs = async (req, res) => {
         title: 1,
         location: 1,
         postedOn: 1,
-        totalOpenings: 1,
+        openings: 1,
       }
     );
+    jobs = jobs.map(job => {
+      return {
+        ...job.toObject(),
+        id: job._id
+      };
+    });
+    console.log(jobs);
     return res.status(200).json({ message: "Fetched all jobs", data: jobs });
   } catch (error) {
     console.error(error);

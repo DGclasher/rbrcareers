@@ -17,15 +17,14 @@ export const deleteApplicant = async (req, res) => {
 
 export const createJob = async (req, res) => {
   try {
-    const { title, description, requirements, location, totalOpenings, type } =
+    const { title, openings, description, location, type } =
       req.body;
     const newJob = await Posting.create({
       type,
       title,
       location,
+      openings,
       description,
-      requirements,
-      totalOpenings,
     });
     return res
       .status(201)
@@ -39,7 +38,7 @@ export const createJob = async (req, res) => {
 export const updateJob = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, requirements, location, totalOpenings, type } =
+    const { title, description, location, openings, type } =
       req.body;
     const updatedJob = await Posting.findByIdAndUpdate(
       id,
@@ -47,9 +46,8 @@ export const updateJob = async (req, res) => {
         type,
         title,
         location,
+        openings,
         description,
-        requirements,
-        totalOpenings,
       },
       { new: true }
     );

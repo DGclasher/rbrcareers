@@ -35,6 +35,10 @@ const postingSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  openings: {
+    type: Number,
+    required: true,
+  },
 });
 
 const Posting = mongoose.model("Posting", postingSchema);

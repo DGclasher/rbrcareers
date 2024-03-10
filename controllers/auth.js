@@ -31,29 +31,3 @@ export const loginAdmin = async (req, res) => {
   }
 };
 
-export const registerAdmin = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const adminAcc = await Admin.create({
-      email: email,
-      password: hashedPassword,
-    });
-    const token = jwt.sign(
-      {
-        id: adminAcc._id,
-        type: "admin",
-        email: adminAcc.email,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "2w" }
-    );
-    return res
-      .status(201)
-      .json({ message: "Admin Created Successfully", token: token });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
