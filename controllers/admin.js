@@ -64,6 +64,11 @@ export const deleteJob = async (req, res) => {
   try {
     const { id } = req.params;
     await Posting.findByIdAndDelete(id);
+    let applicants = await Application.find({ jobId: id });
+    applicants.forEach(async applicant => {
+      await deleteFileFromFirebase(applicant.resumeUrl);
+      await Application.findByIdAndDelete(applicant._id);
+    });
     return res.status(200).json({ message: "Job Deleted Successfully" });
   } catch (error) {
     console.log(error);
