@@ -1,11 +1,11 @@
 import firebaseConfig from "../config/firebaseconfig.js";
 import { initializeApp } from "firebase/app";
 import {
-  getStorage,
   ref,
+  getStorage,
   uploadBytes,
-  getDownloadURL,
   deleteObject,
+  getDownloadURL,
 } from "firebase/storage";
 
 const app = initializeApp(firebaseConfig);

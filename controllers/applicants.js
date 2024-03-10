@@ -49,13 +49,6 @@ export const getAllJobs = async (req, res) => {
         openings: 1,
       }
     );
-    jobs = jobs.map(job => {
-      return {
-        ...job.toObject(),
-        id: job._id
-      };
-    });
-    console.log(jobs);
     return res.status(200).json({ message: "Fetched all jobs", data: jobs });
   } catch (error) {
     console.error(error);
