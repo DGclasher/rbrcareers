@@ -31,6 +31,9 @@ const applicationSchema = new mongoose.Schema({
   yearsOfExperience: {
     type: Number,
   },
+  semester: {
+    type: Number,
+  },
 });
 
 const Application = mongoose.model("Application", applicationSchema);

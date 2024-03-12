@@ -6,6 +6,7 @@ export const applyJob = async (req, res) => {
   try {
     const {
       jobId,
+      semester,
       applicantName,
       applicantEmail,
       applicantPhone,
@@ -18,6 +19,7 @@ export const applyJob = async (req, res) => {
     }
     const application = await Application.create({
       jobId: jobId,
+      semester: semester,
       applicantName: applicantName,
       applicantEmail: applicantEmail,
       applicantPhone: applicantPhone,

@@ -8,6 +8,7 @@ import {
   getApplicants,
   deleteApplicant,
   getApplicantById,
+  exportApplicants,
 } from "../controllers/admin.js";
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.delete("/job/:id", verifyAdmin, deleteJob);
 router.get("/job/:id", verifyAdmin, getApplicants);
 router.get("/applicant/:id", verifyAdmin, getApplicantById);
 router.delete("/applicant/:id", verifyAdmin, deleteApplicant);
+router.get("/export/:id", verifyAdmin, exportApplicants);
 
 export default router;

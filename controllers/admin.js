@@ -1,5 +1,6 @@
 import Posting from "../models/posting.js";
 import Application from "../models/application.js";
+import { exportCsv } from "../utils/export-csv.js";
 import { deleteFileFromFirebase } from "../utils/firebase.js";
 
 export const deleteApplicant = async (req, res) => {
@@ -17,8 +18,7 @@ export const deleteApplicant = async (req, res) => {
 
 export const createJob = async (req, res) => {
   try {
-    const { title, openings, description, location, type } =
-      req.body;
+    const { title, openings, description, location, type } = req.body;
     const newJob = await Posting.create({
       type,
       title,
@@ -38,8 +38,7 @@ export const createJob = async (req, res) => {
 export const updateJob = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, location, openings, type } =
-      req.body;
+    const { title, description, location, openings, type } = req.body;
     const updatedJob = await Posting.findByIdAndUpdate(
       id,
       {
@@ -65,7 +64,7 @@ export const deleteJob = async (req, res) => {
     const { id } = req.params;
     await Posting.findByIdAndDelete(id);
     let applicants = await Application.find({ jobId: id });
-    applicants.forEach(async applicant => {
+    applicants.forEach(async (applicant) => {
       await deleteFileFromFirebase(applicant.resumeUrl);
       await Application.findByIdAndDelete(applicant._id);
     });
@@ -106,6 +105,34 @@ export const getApplicantById = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Fetched applicant", data: applicant });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const normalizeJobName = async (id) => {
+  try {
+    const job = await Posting.findById(id);
+    return job.title.replace(/\s/g, "_");
+  } catch (error) {
+    console.log(error);
+    return "job_applicants";
+  }
+};
+
+export const exportApplicants = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const applications = await Application.find({ jobId: id });
+    const csvStream = await exportCsv(applications);
+    const fileName = await normalizeJobName(id);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${fileName}.csv`
+    );
+    csvStream.pipe(res);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
