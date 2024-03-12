@@ -12,8 +12,9 @@ export const exportCsv = async (data) => {
         name: applicant.applicantName,
         email: applicant.applicantEmail,
         phone: applicant.applicantPhone,
-        yearsOfExperience: applicant.yearsOfExperience,
         qualifications: formattedQualifications,
+        semester: applicant.semester,
+        yearsOfExperience: applicant.yearsOfExperience,
         resumeUrl: applicant.resumeUrl,
       });
     });
@@ -23,8 +24,9 @@ export const exportCsv = async (data) => {
         { id: "name", title: "Name" },
         { id: "email", title: "Email" },
         { id: "phone", title: "Phone" },
-        { id: "yearsOfExperience", title: "YOE" },
         { id: "qualifications", title: "Qualifications" },
+        { id: "semester", title: "Semester" },
+        { id: "yearsOfExperience", title: "YOE" },
         { id: "resumeUrl", title: "Resume" },
       ],
     });
