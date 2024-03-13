@@ -32,7 +32,7 @@ const applicationSchema = new mongoose.Schema({
     type: Number,
   },
   semester: {
-    type: Number,
+    type: String,
   },
 });
 
