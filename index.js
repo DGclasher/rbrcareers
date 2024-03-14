@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 
 import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/admin.js";
+import contactRoutes from "./routes/contact.js";
 import applicantRoutes from "./routes/applicant.js";
 import { initAdmin } from "./utils/init.admin.js";
 dotenv.config();
@@ -28,6 +29,7 @@ initAdmin();
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/jobs", applicantRoutes);
+app.use("/", contactRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
