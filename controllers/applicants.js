@@ -48,7 +48,6 @@ export const getAllJobs = async (req, res) => {
         title: 1,
         location: 1,
         postedOn: 1,
-        openings: 1,
       }
     );
     return res.status(200).json({ message: "Fetched all jobs", data: jobs });

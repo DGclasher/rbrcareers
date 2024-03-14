@@ -24,7 +24,8 @@ const applicationSchema = new mongoose.Schema({
     type: [
       {
         degree: String,
-        institute: String,
+        college: String,
+        university: String,
       },
     ],
   },

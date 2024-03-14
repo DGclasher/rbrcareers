@@ -15,7 +15,7 @@ const postingSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      salary: {
+      stipend: {
         type: Number,
       },
     },
@@ -34,10 +34,6 @@ const postingSchema = new mongoose.Schema({
   isAvailable: {
     type: Boolean,
     default: true,
-  },
-  openings: {
-    type: Number,
-    required: true,
   },
 });
 
