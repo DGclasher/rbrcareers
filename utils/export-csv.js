@@ -6,12 +6,12 @@ export const exportCsv = async (data) => {
     let records = [];
     data.forEach((applicant) => {
       const formattedQualifications = applicant.qualifications
-        .map((q) => `${q.degree} - ${q.institute}`)
+        .map((q) => `${q.degree} - ${q.college} - ${q.university}`)
         .join(", ");
       records.push({
         name: applicant.applicantName,
         email: applicant.applicantEmail,
-        phone: applicant.applicantPhone,
+        phone: `"${applicant.applicantPhone}"`,
         qualifications: formattedQualifications,
         semester: applicant.semester,
         yearsOfExperience: applicant.yearsOfExperience,
