@@ -31,14 +31,13 @@ app.use("/admin", adminRoutes);
 app.use("/jobs", applicantRoutes);
 app.use("/", contactRoutes);
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.log("Error: ", error);
-  });
+try {
+  await mongoose.connect(process.env.MONGO_URI);
+  console.log("Connected to MongoDB");
+} catch (error) {
+  console.log("Error: ", error);
+  process.exit(1);
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
