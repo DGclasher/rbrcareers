@@ -1,0 +1,10 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    container_name: rbrcareers-api
+    ports:
+      - "3000:5000"
+    env_file:
+      - .env
+    
