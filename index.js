@@ -25,7 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
  
 const PORT = process.env.PORT || 5000;
-initAdmin();
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/jobs", applicantRoutes);
@@ -39,6 +38,7 @@ try {
   process.exit(1);
 }
 
+initAdmin();
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
